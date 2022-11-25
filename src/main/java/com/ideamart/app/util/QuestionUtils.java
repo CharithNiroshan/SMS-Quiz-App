@@ -1,19 +1,30 @@
 package com.ideamart.app.util;
 
+import com.ideamart.app.constants.AnswerStatus;
 import com.ideamart.app.constants.Message;
 import com.ideamart.app.constants.QuestionStatus;
+import com.ideamart.app.exception.NotAnsweredYetException;
 import com.ideamart.app.model.Question;
+import com.ideamart.app.model.User;
+import com.ideamart.app.utilclasses.Attempt;
 import com.ideamart.app.utilclasses.QuestionResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Component
 public class QuestionUtils {
+    private final MessageUtils messageUtils;
+
+    @Autowired
+    public QuestionUtils(MessageUtils messageUtils) {
+        this.messageUtils = messageUtils;
+    }
+
     public String getQuestionString(Question question) {
         String sentence = question.getSentence();
         Map<Integer, String> answersMap = question.getAnswers();
@@ -25,24 +36,47 @@ public class QuestionUtils {
         return sentence + "\n\n" + answers;
     }
 
-    public String getUserScoreString(List<QuestionResult> questionResults) {
+    public int getUserFinalScore(List<QuestionResult> questionResults) {
         int finalScore = 0;
-        int noOfAnsweredQuestion = 0;
+
         for (QuestionResult questionResult : questionResults) {
-            if (questionResult.getQuestionStatus() == QuestionStatus.CORRECT) {
-                finalScore += 10;
+            for (Attempt attempt : questionResult.getAttempts()) {
+                if (attempt.getAnswerStatus() == AnswerStatus.CORRECT && questionResult.getAttempts().indexOf(attempt) == 0) {
+                    finalScore += 10;
+                } else if (attempt.getAnswerStatus() == AnswerStatus.CORRECT && questionResult.getAttempts().indexOf(attempt) == 1) {
+                    finalScore += 5;
+                }
             }
-            if (questionResult.getQuestionStatus() != QuestionStatus.PENDING) {
+        }
+
+        return finalScore;
+    }
+
+    public double getUserAverage(List<QuestionResult> questionResults, int finalScore, String address) {
+        int noOfAnsweredQuestion = 0;
+
+        for (QuestionResult questionResult : questionResults) {
+            if (questionResult.getQuestionStatus() == QuestionStatus.ANSWERED) {
                 noOfAnsweredQuestion++;
             }
         }
 
         if (noOfAnsweredQuestion == 0) {
-            return Message.NOTANSWEREDYET.toString();
+            messageUtils.sendMessage(Message.NOTANSWEREDYET.toString(), address);
+            throw new NotAnsweredYetException();
         } else {
-            double average = (finalScore * 100) / (noOfAnsweredQuestion * 10);
-            DecimalFormat decimalFormat=new DecimalFormat("#.##");
-            return "Your current score is: " + finalScore + "\nYour current average: " + Double.valueOf(decimalFormat.format(average) )+ "%";
+            return (finalScore * 100) / (noOfAnsweredQuestion * 10);
         }
     }
+
+    public String getLeaderboardString(List<User> users, List<Integer> finalScores) {
+        StringBuilder leaderboard = new StringBuilder();
+        leaderboard.append("\n\nLEADERBOARD\n\n");
+        for (int i = 0; i < users.size(); i++) {
+            String user = users.get(i).getAddress() + " : " + finalScores.get(i) + "\n";
+            leaderboard.append(user);
+        }
+        return leaderboard.toString();
+    }
 }
+

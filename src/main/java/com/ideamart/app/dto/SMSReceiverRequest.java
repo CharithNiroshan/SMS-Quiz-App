@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SMSReceiverRequest {
+    private String version;
     private String applicationId;
     private String sourceAddress;
     private String message;
     private String requestId;
-    private String version;
     private String encoding;
 }

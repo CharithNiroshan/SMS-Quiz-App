@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,10 +18,9 @@ public class User {
     @Id
     private String id;
     private String address;
-    private List<QuestionResult> questionResults;
+    private List<QuestionResult> questionResults = new ArrayList<>();
 
-    public User(String address, List<QuestionResult> questionResults) {
+    public User(String address) {
         this.address = address;
-        this.questionResults = questionResults;
     }
 }

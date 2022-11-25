@@ -5,12 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionResult {
     private int questionNo;
-    private int answerGiven;
+    private List<Attempt> attempts = new ArrayList<>();
     private QuestionStatus questionStatus;
 
     public QuestionResult(int questionNo, QuestionStatus questionStatus) {
