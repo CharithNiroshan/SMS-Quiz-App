@@ -52,13 +52,17 @@ public class UserService {
         }
     }
 
-    public void addQuestionToUser(String destinationAddress, QuestionResult questionResult) {
+    public void addQuestionToUser(String destinationAddress, int questionNo) {
         Optional<User> user = getUser(destinationAddress);
 
         if (user.isPresent()) {
             List<QuestionResult> questionResults = user.get().getQuestionResults();
-            questionResults.add(questionResult);
-            updateUserQuestionList(destinationAddress, questionResults);
+            List<QuestionResult> filteredQuestionResults = questionResults.stream().filter(question -> question.getQuestionNo() == questionNo).toList();
+            if (filteredQuestionResults.isEmpty()) {
+                QuestionResult questionResult = new QuestionResult(questionNo, QuestionStatus.PENDING);
+                questionResults.add(questionResult);
+                updateUserQuestionList(destinationAddress, questionResults);
+            }
         } else {
             messageUtils.sendMessage(Message.USERNOTFOUND.toString(), destinationAddress);
             throw new UserNotFoundException();

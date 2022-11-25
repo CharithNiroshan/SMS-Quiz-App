@@ -8,7 +8,6 @@ import com.ideamart.app.model.Question;
 import com.ideamart.app.repository.QuestionRepository;
 import com.ideamart.app.util.MessageUtils;
 import com.ideamart.app.util.QuestionUtils;
-import com.ideamart.app.utilclasses.QuestionResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,8 +41,7 @@ public class QuestionService {
         Optional<Question> question = questionRepository.findByQuestionNo(questionNo);
 
         if (question.isPresent()) {
-            QuestionResult questionResult = new QuestionResult(questionNo, QuestionStatus.PENDING);
-            userService.addQuestionToUser(destinationAddress, questionResult);
+            userService.addQuestionToUser(destinationAddress, questionNo);
             messageUtils.sendMessage(questionUtils.getQuestionString(question.get()), destinationAddress);
         } else {
             messageUtils.sendMessage(Message.QUESTIONNOTFOUND.toString(), destinationAddress);
