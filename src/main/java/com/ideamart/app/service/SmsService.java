@@ -8,12 +8,15 @@ import com.ideamart.app.util.MessageUtils;
 import com.ideamart.app.util.QuestionUtils;
 import com.ideamart.app.utilclasses.Attempt;
 import com.ideamart.app.utilclasses.QuestionResult;
+import com.ideamart.app.utilclasses.UserScore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -80,8 +83,16 @@ public class SmsService {
 
     public void sendLeaderboard(String address) {
         List<User> users = userService.getAllUsers();
-        List<Integer> scores = users.stream().map(user -> questionUtils.getUserFinalScore(user.getQuestionResults())).toList();
-        String leaderboard = questionUtils.getLeaderboardString(users, scores);
+        List<UserScore> userScores = new java.util.ArrayList<>(users.stream().map(user -> {
+            int finalScore = questionUtils.getUserFinalScore(user.getQuestionResults());
+            if(Objects.equals(address, user.getAddress())){
+                return new UserScore("You", finalScore);
+            }else{
+                return new UserScore(user.getAddress(), finalScore);
+            }
+        }).toList());
+        Collections.sort(userScores);
+        String leaderboard = questionUtils.getLeaderboardString(userScores);
         messageUtils.sendMessage(leaderboard, address);
     }
 

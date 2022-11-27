@@ -5,9 +5,9 @@ import com.ideamart.app.constants.Message;
 import com.ideamart.app.constants.QuestionStatus;
 import com.ideamart.app.exception.NotAnsweredYetException;
 import com.ideamart.app.model.Question;
-import com.ideamart.app.model.User;
 import com.ideamart.app.utilclasses.Attempt;
 import com.ideamart.app.utilclasses.QuestionResult;
+import com.ideamart.app.utilclasses.UserScore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -69,13 +69,10 @@ public class QuestionUtils {
         }
     }
 
-    public String getLeaderboardString(List<User> users, List<Integer> finalScores) {
+    public String getLeaderboardString(List<UserScore> userScores) {
         StringBuilder leaderboard = new StringBuilder();
         leaderboard.append("\n\nLEADERBOARD\n\n");
-        for (int i = 0; i < users.size(); i++) {
-            String user = users.get(i).getAddress() + " : " + finalScores.get(i) + "\n";
-            leaderboard.append(user);
-        }
+        userScores.forEach(userScore -> leaderboard.append(userScore.getAddress()).append(" : ").append(userScore.getScore()).append("\n"));
         return leaderboard.toString();
     }
 }
