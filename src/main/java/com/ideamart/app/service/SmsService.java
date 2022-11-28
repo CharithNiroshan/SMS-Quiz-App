@@ -41,8 +41,8 @@ public class SmsService {
         messageUtils.sendMessage(Message.REGISTERDSUCCESSFULLY.toString(), address);
     }
 
-    public void sendQuestion(String messageContent, String address) {
-        int questionNo = messageUtils.retrieveQuestionNo(messageContent);
+    public void sendQuestion(String message, String address) {
+        int questionNo = messageUtils.retrieveQuestionNo(message);
         Question question = questionService.checkIfQuestionExists(questionNo, address);
         User user = userService.checkIfUserExists(address);
         if (userService.checkIfQuestionAlreadyRequestedByUser(questionNo, user.getQuestionResults())) {

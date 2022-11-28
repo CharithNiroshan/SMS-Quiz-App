@@ -71,7 +71,7 @@ public class QuestionUtils {
 
     public String getLeaderboardString(List<UserScore> userScores) {
         StringBuilder leaderboard = new StringBuilder();
-        leaderboard.append("\n\nLEADERBOARD\n\n");
+        leaderboard.append("LEADERBOARD\n\n");
         userScores.forEach(userScore -> leaderboard.append(userScore.getAddress()).append(" : ").append(userScore.getScore()).append("\n"));
         return leaderboard.toString();
     }

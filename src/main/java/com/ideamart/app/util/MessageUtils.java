@@ -1,10 +1,8 @@
 package com.ideamart.app.util;
 
-import com.ideamart.app.constants.Message;
 import com.ideamart.app.constants.RequestType;
 import com.ideamart.app.dto.SMSSenderRequest;
 import com.ideamart.app.dto.SMSSenderResponse;
-import com.ideamart.app.exception.InvalidRequestException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,41 +19,28 @@ public class MessageUtils {
     }
 
     public RequestType getRequestType(String message) {
-        if (message.contains("REG")) {
+        if (message.matches("TEST\\s+REG")) {
             return RequestType.REGISTER;
-        } else if (message.contains("SCORE")) {
+        } else if (message.matches("TEST\\s+SCORE")) {
             return RequestType.SCORE;
-        } else if (message.contains("Q") && message.contains("ANS")) {
+        } else if (message.matches("TEST\\s+Q\\d\\s+ANS\\d")) {
             return RequestType.ANSWER;
-        } else if (message.contains("Q")) {
+        } else if (message.matches("TEST\\s+Q\\d")) {
             return RequestType.QUESTION;
-        } else if (message.contains("LEADERBOARD")) {
+        } else if (message.matches("TEST\\s+LEADERBOARD")) {
             return RequestType.LEADERBOARD;
         } else {
             return RequestType.INVALID;
         }
     }
 
-    public void checkValidityOfMessage(String message, String address) {
-        if (message.isEmpty()) {
-            sendMessage(Message.EMPTYMESSAGE.toString(), address);
-            throw new InvalidRequestException();
-        } else if (!message.contains("TEST")) {
-            sendMessage(Message.NOTCONTAINSTEST.toString(), address);
-            throw new InvalidRequestException();
-        } else if (!message.startsWith("TEST")) {
-            sendMessage(Message.NOTSTARTSWITHTEST.toString(), address);
-            throw new InvalidRequestException();
-        }
-    }
-
     public int retrieveQuestionNo(String message) {
         String stringWithoutWhiteSpaces = message.replaceAll("\\s", "");
-        return Integer.parseInt(stringWithoutWhiteSpaces.substring(1, 2));
+        return Integer.parseInt(stringWithoutWhiteSpaces.substring(5, 6));
     }
 
     public int retrieveAnswerNo(String message) {
         String stringWithoutWhiteSpaces = message.replaceAll("\\s", "");
-        return Integer.parseInt(stringWithoutWhiteSpaces.substring(5));
+        return Integer.parseInt(stringWithoutWhiteSpaces.substring(9, 10));
     }
 }

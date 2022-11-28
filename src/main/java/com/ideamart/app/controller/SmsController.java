@@ -36,13 +36,10 @@ public class SmsController {
         }
 
         try {
-            messageUtils.checkValidityOfMessage(message, senderAddress);
-            String messageContent = message.substring(4);
-
-            switch (messageUtils.getRequestType(messageContent)) {
+            switch (messageUtils.getRequestType(message)) {
                 case REGISTER -> smsService.registerUser(senderAddress);
-                case QUESTION -> smsService.sendQuestion(messageContent, senderAddress);
-                case ANSWER -> smsService.validateAnswerAndSendReply(messageContent, senderAddress);
+                case QUESTION -> smsService.sendQuestion(message, senderAddress);
+                case ANSWER -> smsService.validateAnswerAndSendReply(message, senderAddress);
                 case SCORE -> smsService.sendScore(senderAddress);
                 case LEADERBOARD -> smsService.sendLeaderboard(senderAddress);
                 default -> smsService.sendInvalidRequest(senderAddress);

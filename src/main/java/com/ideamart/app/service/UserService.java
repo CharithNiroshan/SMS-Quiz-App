@@ -102,7 +102,6 @@ public class UserService {
         return answer == userAnswer;
     }
 
-
     public Optional<User> getUser(String address) {
         return userRepository.findByAddress(address);
     }
