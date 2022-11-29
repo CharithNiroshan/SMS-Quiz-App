@@ -1,5 +1,6 @@
 package com.ideamart.app.util;
 
+import com.ideamart.app.constants.Message;
 import com.ideamart.app.constants.RequestType;
 import com.ideamart.app.dto.SMSSenderRequest;
 import com.ideamart.app.dto.SMSSenderResponse;
@@ -18,7 +19,7 @@ public class MessageUtils {
         restTemplate.postForObject(SERVERURL, smsSenderRequest, SMSSenderResponse.class);
     }
 
-    public RequestType getRequestType(String message) {
+    public RequestType getRequestType(String message, String address) {
         if (message.matches("TEST\\s+REG")) {
             return RequestType.REGISTER;
         } else if (message.matches("TEST\\s+SCORE")) {
@@ -30,6 +31,7 @@ public class MessageUtils {
         } else if (message.matches("TEST\\s+LEADERBOARD")) {
             return RequestType.LEADERBOARD;
         } else {
+            sendMessage(Message.INVALIDREQUEST.toString(), address);
             return RequestType.INVALID;
         }
     }

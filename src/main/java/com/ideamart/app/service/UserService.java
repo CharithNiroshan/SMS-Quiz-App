@@ -49,7 +49,8 @@ public class UserService {
     }
 
     public User checkIfUserExists(String address) {
-        Optional<User> user = getUser(address);
+        Optional<User> user = userRepository.findByAddress(address);
+
         if (user.isPresent()) {
             return user.get();
         } else {
@@ -100,10 +101,6 @@ public class UserService {
 
     public boolean checkAnswer(int answer, int userAnswer) {
         return answer == userAnswer;
-    }
-
-    public Optional<User> getUser(String address) {
-        return userRepository.findByAddress(address);
     }
 
     public void updateUserQuestionList(String destinationAddress, List<QuestionResult> questionResults) {

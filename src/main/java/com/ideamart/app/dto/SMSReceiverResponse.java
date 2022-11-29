@@ -1,5 +1,6 @@
 package com.ideamart.app.dto;
 
+import com.ideamart.app.constants.SmsReceiverResponseCode;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SMSReceiverResponse {
-    private String statusCode;
+    private SmsReceiverResponseCode statusCode;
     private String statusDetail;
 }

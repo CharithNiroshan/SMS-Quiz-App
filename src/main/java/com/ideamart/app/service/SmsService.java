@@ -2,6 +2,8 @@ package com.ideamart.app.service;
 
 import com.ideamart.app.constants.AnswerStatus;
 import com.ideamart.app.constants.Message;
+import com.ideamart.app.constants.SmsReceiverResponseCode;
+import com.ideamart.app.dto.SMSReceiverResponse;
 import com.ideamart.app.model.Question;
 import com.ideamart.app.model.User;
 import com.ideamart.app.util.MessageUtils;
@@ -34,14 +36,15 @@ public class SmsService {
         this.questionUtils = questionUtils;
     }
 
-    public void registerUser(String address) {
+    public SMSReceiverResponse registerUser(String address) {
         userService.checkIfUserAlreadyExists(address);
         User user = new User(address);
         userService.saveUser(user);
         messageUtils.sendMessage(Message.REGISTERDSUCCESSFULLY.toString(), address);
+        return new SMSReceiverResponse(SmsReceiverResponseCode.S0000, Message.REGISTERDSUCCESSFULLY.toString());
     }
 
-    public void sendQuestion(String message, String address) {
+    public SMSReceiverResponse sendQuestion(String message, String address) {
         int questionNo = messageUtils.retrieveQuestionNo(message);
         Question question = questionService.checkIfQuestionExists(questionNo, address);
         User user = userService.checkIfUserExists(address);
@@ -51,9 +54,10 @@ public class SmsService {
         }
         String questionString = questionUtils.getQuestionString(question);
         messageUtils.sendMessage(questionString, address);
+        return new SMSReceiverResponse(SmsReceiverResponseCode.S0001, Message.QUESTIONSENDSUCCESSFULLY.toString());
     }
 
-    public void validateAnswerAndSendReply(String messageContent, String address) {
+    public SMSReceiverResponse validateAnswerAndSendReply(String messageContent, String address) {
         int questionNo = messageUtils.retrieveQuestionNo(messageContent);
         int answerNo = messageUtils.retrieveAnswerNo(messageContent);
         User user = userService.checkIfUserExists(address);
@@ -70,34 +74,33 @@ public class SmsService {
         }
         List<QuestionResult> updatedQuestionResultsList = userService.getUpdatedQuestionResultsList(user.getQuestionResults(), questionNo, attempt);
         userService.updateUserQuestionList(address, updatedQuestionResultsList);
+        return new SMSReceiverResponse(SmsReceiverResponseCode.S0002, Message.ANSWERSTATUSSENDSUCCESSFULLY.toString());
     }
 
-    public void sendScore(String address) {
+    public SMSReceiverResponse sendScore(String address) {
         User user = userService.checkIfUserExists(address);
         int finalScore = questionUtils.getUserFinalScore(user.getQuestionResults());
         double average = questionUtils.getUserAverage(user.getQuestionResults(), finalScore, address);
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         String userScoreString = "Your current score is: " + finalScore + "\nYour current average: " + Double.valueOf(decimalFormat.format(average)) + "%";
         messageUtils.sendMessage(userScoreString, address);
+        return new SMSReceiverResponse(SmsReceiverResponseCode.S0003, Message.SCORESENDSUCCESSFULLY.toString());
     }
 
-    public void sendLeaderboard(String address) {
+    public SMSReceiverResponse sendLeaderboard(String address) {
         List<User> users = userService.getAllUsers();
         List<UserScore> userScores = new java.util.ArrayList<>(users.stream().map(user -> {
             int finalScore = questionUtils.getUserFinalScore(user.getQuestionResults());
-            if(Objects.equals(address, user.getAddress())){
+            if (Objects.equals(address, user.getAddress())) {
                 return new UserScore("You", finalScore);
-            }else{
+            } else {
                 return new UserScore(user.getAddress(), finalScore);
             }
         }).toList());
         Collections.sort(userScores);
         String leaderboard = questionUtils.getLeaderboardString(userScores);
         messageUtils.sendMessage(leaderboard, address);
-    }
-
-    public void sendInvalidRequest(String address) {
-        messageUtils.sendMessage(Message.INVALIDREQUEST.toString(), address);
+        return new SMSReceiverResponse(SmsReceiverResponseCode.S0004, Message.LEADERBOARDSENDSUCCESSFULLY.toString());
     }
 }
 
