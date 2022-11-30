@@ -1,4 +1,4 @@
-package com.ideamart.app;
+package com.ideamart.app.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideamart.app.controller.QuestionController;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(QuestionController.class)
-class QuestionControllerTests {
+class QuestionControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired

@@ -1,4 +1,4 @@
-package com.ideamart.app;
+package com.ideamart.app.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideamart.app.constants.Message;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(SmsController.class)
-class SmsControllerTests {
+class SmsControllerTest {
     final String LINK = "/mo-receiver";
 
     @Autowired
