@@ -1,4 +1,4 @@
-package com.ideamart.app;
+package com.ideamart.app.service;
 
 import com.ideamart.app.constants.SmsReceiverResponseCode;
 import com.ideamart.app.dto.SMSReceiverResponse;
@@ -6,9 +6,6 @@ import com.ideamart.app.exception.QuestionNotFoundException;
 import com.ideamart.app.exception.UserNotFoundException;
 import com.ideamart.app.model.Question;
 import com.ideamart.app.model.User;
-import com.ideamart.app.service.QuestionService;
-import com.ideamart.app.service.SmsService;
-import com.ideamart.app.service.UserService;
 import com.ideamart.app.util.MessageUtils;
 import com.ideamart.app.util.QuestionUtils;
 import org.junit.jupiter.api.Test;

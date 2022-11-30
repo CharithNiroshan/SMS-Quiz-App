@@ -1,10 +1,9 @@
-package com.ideamart.app;
+package com.ideamart.app.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideamart.app.constants.Message;
 import com.ideamart.app.constants.RequestType;
 import com.ideamart.app.constants.SmsReceiverResponseCode;
-import com.ideamart.app.controller.SmsController;
 import com.ideamart.app.dto.SMSReceiverRequest;
 import com.ideamart.app.dto.SMSReceiverResponse;
 import com.ideamart.app.exception.QuestionNotFoundException;
@@ -110,7 +109,7 @@ class SmsControllerTests {
 
     @Test
     void whenAskForNonExistentQuestionNoShouldReturnE0003ErrorCode() throws Exception {
-        given(messageUtils.getRequestType(smsReceiverRequest.getMessage(), smsReceiverRequest.getSourceAddress())).willReturn(RequestType.REGISTER);
+        given(messageUtils.getRequestType(smsReceiverRequest.getMessage(), smsReceiverRequest.getSourceAddress())).willReturn(RequestType.QUESTION);
         given(smsService.sendQuestion(smsReceiverRequest.getMessage(), smsReceiverRequest.getSourceAddress())).willThrow(new QuestionNotFoundException());
         mockMvc.perform(
                         post(LINK)

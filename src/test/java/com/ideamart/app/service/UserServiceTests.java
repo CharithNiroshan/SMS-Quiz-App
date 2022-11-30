@@ -1,8 +1,7 @@
-package com.ideamart.app;
+package com.ideamart.app.service;
 
 import com.ideamart.app.model.User;
 import com.ideamart.app.repository.UserRepository;
-import com.ideamart.app.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

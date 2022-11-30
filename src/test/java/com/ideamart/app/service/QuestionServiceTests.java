@@ -1,10 +1,9 @@
-package com.ideamart.app;
+package com.ideamart.app.service;
 
 import com.ideamart.app.dto.QuestionRequest;
 import com.ideamart.app.exception.QuestionNotFoundException;
 import com.ideamart.app.model.Question;
 import com.ideamart.app.repository.QuestionRepository;
-import com.ideamart.app.service.QuestionService;
 import com.ideamart.app.util.MessageUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

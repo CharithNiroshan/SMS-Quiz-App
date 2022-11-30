@@ -1,7 +1,6 @@
-package com.ideamart.app;
+package com.ideamart.app.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ideamart.app.controller.QuestionController;
 import com.ideamart.app.dto.QuestionRequest;
 import com.ideamart.app.model.Question;
 import com.ideamart.app.service.QuestionService;
