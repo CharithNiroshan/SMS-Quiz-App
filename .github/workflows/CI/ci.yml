@@ -22,3 +22,6 @@ jobs:
 
       - name: Test with maven
         run: mvn test
+
+      - name: Clean and package with maven
+        run: mvn clean package
