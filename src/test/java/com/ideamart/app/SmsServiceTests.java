@@ -1,4 +1,4 @@
-package com.ideamart.app.service;
+package com.ideamart.app;
 
 import com.ideamart.app.constants.SmsReceiverResponseCode;
 import com.ideamart.app.dto.SMSReceiverResponse;
@@ -23,7 +23,7 @@ import static org.mockito.BDDMockito.given;
 import static org.testng.Assert.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-class SmsServiceTest {
+class SmsServiceTests {
     @InjectMocks
     private SmsService smsService;
 

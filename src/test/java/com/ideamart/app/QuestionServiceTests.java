@@ -1,4 +1,4 @@
-package com.ideamart.app.service;
+package com.ideamart.app;
 
 import com.ideamart.app.dto.QuestionRequest;
 import com.ideamart.app.exception.QuestionNotFoundException;
@@ -19,7 +19,7 @@ import static org.mockito.BDDMockito.given;
 import static org.testng.Assert.*;
 
 @ExtendWith(MockitoExtension.class)
-class QuestionServiceTest {
+class QuestionServiceTests {
     @InjectMocks
     private QuestionService questionService;
 

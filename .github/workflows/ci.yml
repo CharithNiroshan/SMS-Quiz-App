@@ -23,5 +23,5 @@ jobs:
       - name: Test with maven
         run: mvn test
 
-      - name: Clean and package with maven
+      - name: Build and Create project jar file with maven
         run: mvn clean package

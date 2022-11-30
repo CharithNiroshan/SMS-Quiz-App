@@ -1,4 +1,4 @@
-package com.ideamart.app.service;
+package com.ideamart.app;
 
 import com.ideamart.app.model.User;
 import com.ideamart.app.repository.UserRepository;
@@ -17,7 +17,7 @@ import static org.mockito.BDDMockito.given;
 import static org.testng.Assert.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class UserServiceTests {
     @InjectMocks
     private UserService userService;
 
