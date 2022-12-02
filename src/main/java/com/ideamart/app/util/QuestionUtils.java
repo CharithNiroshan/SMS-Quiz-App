@@ -4,10 +4,10 @@ import com.ideamart.app.constant.AnswerStatus;
 import com.ideamart.app.constant.Message;
 import com.ideamart.app.constant.QuestionStatus;
 import com.ideamart.app.exception.NotAnsweredYetException;
-import com.ideamart.app.model.Question;
-import com.ideamart.app.utilclass.Attempt;
-import com.ideamart.app.utilclass.QuestionResult;
-import com.ideamart.app.utilclass.UserScore;
+import com.ideamart.app.entity.Question;
+import com.ideamart.app.model.Attempt;
+import com.ideamart.app.model.QuestionResult;
+import com.ideamart.app.model.UserScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -60,7 +60,7 @@ public class QuestionUtils {
         }
 
         if (noOfAnsweredQuestion == 0) {
-            messageUtils.sendMessage(Message.NOTANSWEREDYET.toString(), address);
+            messageUtils.sendMessage(Message.NOT_ANSWERED_YET.toString(), address);
             throw new NotAnsweredYetException();
         } else {
             return (finalScore * 100) / (noOfAnsweredQuestion * 10);

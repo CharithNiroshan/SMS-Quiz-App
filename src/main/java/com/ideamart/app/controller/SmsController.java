@@ -51,28 +51,28 @@ public class SmsController {
 
             return new ResponseEntity<>(smsReceiverResponse, HttpStatus.OK);
         } catch (InvalidRequestException e) {
-            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0000, Message.INVALIDREQUEST.toString());
+            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0000, Message.INVALID_REQUEST.toString());
             return new ResponseEntity<>(smsReceiverResponse, HttpStatus.OK);
         } catch (UserAlreadyExistsException e) {
-            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0001, Message.USERALREADYEXISTS.toString());
+            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0001, Message.USER_ALREADY_EXISTS.toString());
             return new ResponseEntity<>(smsReceiverResponse, HttpStatus.OK);
         } catch (UserNotFoundException e) {
-            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0002, Message.USERNOTFOUND.toString());
+            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0002, Message.USER_NOT_FOUND.toString());
             return new ResponseEntity<>(smsReceiverResponse, HttpStatus.OK);
         } catch (QuestionNotFoundException e) {
-            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0003, Message.QUESTIONNOTFOUND.toString());
+            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0003, Message.QUESTION_NOT_FOUND.toString());
             return new ResponseEntity<>(smsReceiverResponse, HttpStatus.OK);
         } catch (NotRequestedYetException e) {
-            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0004, Message.NOTREQUESTEDYET.toString());
+            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0004, Message.NOT_REQUESTED_YET.toString());
             return new ResponseEntity<>(smsReceiverResponse, HttpStatus.OK);
         } catch (NoAttemptsLeftException e) {
-            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0005, Message.NOATTEMPTSLEFT.toString());
+            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0005, Message.NO_ATTEMPTS_LEFT.toString());
             return new ResponseEntity<>(smsReceiverResponse, HttpStatus.OK);
         } catch (AlreadyAnsweredCorrectlyException e) {
-            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0006, Message.ALREADYANSWEREDCORRECTLY.toString());
+            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0006, Message.ALREADY_ANSWERED_CORRECTLY.toString());
             return new ResponseEntity<>(smsReceiverResponse, HttpStatus.OK);
         } catch (NotAnsweredYetException e) {
-            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0007, Message.NOTANSWEREDYET.toString());
+            SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E0007, Message.NOT_ANSWERED_YET.toString());
             return new ResponseEntity<>(smsReceiverResponse, HttpStatus.OK);
         } catch (Exception e) {
             SMSReceiverResponse smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.E1000, e.getMessage());

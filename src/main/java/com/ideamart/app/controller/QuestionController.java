@@ -2,7 +2,7 @@ package com.ideamart.app.controller;
 
 import com.ideamart.app.dto.QuestionRequest;
 import com.ideamart.app.dto.QuestionResponse;
-import com.ideamart.app.model.Question;
+import com.ideamart.app.entity.Question;
 import com.ideamart.app.service.QuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

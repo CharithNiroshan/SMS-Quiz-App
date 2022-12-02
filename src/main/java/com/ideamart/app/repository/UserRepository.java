@@ -1,6 +1,6 @@
 package com.ideamart.app.repository;
 
-import com.ideamart.app.model.User;
+import com.ideamart.app.entity.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

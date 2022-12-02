@@ -1,6 +1,6 @@
-package com.ideamart.app.model;
+package com.ideamart.app.entity;
 
-import com.ideamart.app.utilclass.QuestionResult;
+import com.ideamart.app.model.QuestionResult;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

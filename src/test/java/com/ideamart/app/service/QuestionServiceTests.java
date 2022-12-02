@@ -2,7 +2,7 @@ package com.ideamart.app.service;
 
 import com.ideamart.app.dto.QuestionRequest;
 import com.ideamart.app.exception.QuestionNotFoundException;
-import com.ideamart.app.model.Question;
+import com.ideamart.app.entity.Question;
 import com.ideamart.app.repository.QuestionRepository;
 import com.ideamart.app.util.MessageUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,11 +27,12 @@ class QuestionServiceTests {
     @Mock
     private MessageUtils messageUtils;
 
+    private final List<Question> questions = new ArrayList<>();
+
     private Question question;
 
     @BeforeEach
     public void init() {
-        int questionNo = 1;
         String sentence = "Who is Prime Minister of Sri Lanka?";
         int answerNo = 4;
         Map<Integer, String> answers = new HashMap<>();
@@ -39,28 +40,37 @@ class QuestionServiceTests {
         answers.put(2, "Sajith Premadasa");
         answers.put(3, "Maithripala Sirisena");
         answers.put(4, "Dinesh Gunawardena");
-        question = new Question(questionNo, sentence, answers, answerNo);
+        question = new Question(sentence, answers, answerNo);
+        questions.add(question);
     }
 
 
     @Test
     void shouldReturnAQuestionObjectWhenValidQuestionNumberReceived() {
-        given(questionRepository.findByQuestionNo(1)).willReturn(Optional.of(question));
+        given(questionRepository.findAll()).willReturn(questions);
         Question retrievedQuestion = questionService.checkIfQuestionExists(1, "tel:776213875");
         assertNotNull(retrievedQuestion);
-        assertEquals(retrievedQuestion.getQuestionNo(), question.getQuestionNo());
+        assertEquals(retrievedQuestion.getAnswerNo(), questions.get(0).getAnswerNo());
     }
 
     @Test
     void shouldThrowQuestionNotFoundExceptionWhenInvalidQuestionNoReceived() {
-        given(questionRepository.findByQuestionNo(8)).willReturn(Optional.empty());
+        given(questionRepository.findAll()).willReturn(questions);
         assertThrows(QuestionNotFoundException.class, () -> questionService.checkIfQuestionExists(8, "tel:776213875"));
     }
 
     @Test
     void shouldReturnCreatedQuestionWhenReceivedQuestionRequest() {
         QuestionRequest questionRequest = new QuestionRequest(question.getSentence(), question.getAnswers(), question.getAnswerNo());
-        given(questionRepository.findAll()).willReturn(new ArrayList<Question>());
+        given(questionRepository.save(question)).willReturn(question);
+        Question question = questionService.saveQuestion(questionRequest);
+        assertEquals(question.getAnswerNo(), 4);
+        assertEquals(question.getSentence(), "Who is Prime Minister of Sri Lanka?");
+    }
+
+    @Test
+    void whenQuestionAddedAfterDeletingAOneDuplicateQuestionNotGenerated() {
+        QuestionRequest questionRequest = new QuestionRequest(question.getSentence(), question.getAnswers(), question.getAnswerNo());
         given(questionRepository.save(question)).willReturn(question);
         Question question = questionService.saveQuestion(questionRequest);
         assertEquals(question.getAnswerNo(), 4);

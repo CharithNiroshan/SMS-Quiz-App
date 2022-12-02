@@ -2,7 +2,7 @@ package com.ideamart.app.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ideamart.app.dto.QuestionRequest;
-import com.ideamart.app.model.Question;
+import com.ideamart.app.entity.Question;
 import com.ideamart.app.service.QuestionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class QuestionControllerTests {
 
     @Test
     void whenPassedQuestionRequestObjectReturnsNotNullObjectOfQuestionClass() throws Exception {
-        Question question = new Question(1, questionRequest.getSentence(), questionRequest.getAnswers(), questionRequest.getAnswer());
+        Question question = new Question(questionRequest.getSentence(), questionRequest.getAnswers(), questionRequest.getAnswer());
         given(questionService.saveQuestion(questionRequest)).willReturn(question);
         mockMvc.perform(
                         post("/api/question")

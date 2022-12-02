@@ -1,4 +1,4 @@
-package com.ideamart.app.model;
+package com.ideamart.app.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,15 +15,13 @@ import java.util.Map;
 public class Question {
     @Id
     private String id;
-    private int questionNo;
     private String sentence;
     private Map<Integer, String> answers;
     private int answerNo;
 
-    public Question(int questionNo, String sentence, Map<Integer, String> answers, int answerNo) {
+    public Question(String sentence, Map<Integer, String> answers, int answerNo) {
         this.sentence = sentence;
         this.answers = answers;
         this.answerNo = answerNo;
-        this.questionNo = questionNo;
     }
 }

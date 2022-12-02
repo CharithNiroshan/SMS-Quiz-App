@@ -1,6 +1,6 @@
 package com.ideamart.app.dto;
 
-import com.ideamart.app.model.Question;
+import com.ideamart.app.entity.Question;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

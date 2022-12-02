@@ -1,4 +1,4 @@
-package com.ideamart.app.utilclass;
+package com.ideamart.app.model;
 
 import com.ideamart.app.constant.AnswerStatus;
 import lombok.AllArgsConstructor;

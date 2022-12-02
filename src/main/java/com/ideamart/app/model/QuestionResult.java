@@ -1,4 +1,4 @@
-package com.ideamart.app.utilclass;
+package com.ideamart.app.model;
 
 import com.ideamart.app.constant.QuestionStatus;
 import lombok.AllArgsConstructor;
@@ -12,12 +12,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionResult {
-    private int questionNo;
+    private String id;
     private List<Attempt> attempts = new ArrayList<>();
     private QuestionStatus questionStatus;
 
-    public QuestionResult(int questionNo, QuestionStatus questionStatus) {
-        this.questionNo = questionNo;
+    public QuestionResult(String id, QuestionStatus questionStatus) {
+        this.id = id;
         this.questionStatus = questionStatus;
     }
 }

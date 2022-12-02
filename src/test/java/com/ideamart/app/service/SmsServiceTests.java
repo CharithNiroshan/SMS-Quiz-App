@@ -4,8 +4,8 @@ import com.ideamart.app.constant.SmsReceiverResponseCode;
 import com.ideamart.app.dto.SMSReceiverResponse;
 import com.ideamart.app.exception.QuestionNotFoundException;
 import com.ideamart.app.exception.UserNotFoundException;
-import com.ideamart.app.model.Question;
-import com.ideamart.app.model.User;
+import com.ideamart.app.entity.Question;
+import com.ideamart.app.entity.User;
 import com.ideamart.app.util.MessageUtils;
 import com.ideamart.app.util.QuestionUtils;
 import org.junit.jupiter.api.Test;
@@ -48,7 +48,6 @@ class SmsServiceTests {
         given(messageUtils.retrieveQuestionNo(MESSAGE)).willReturn(2);
         given(questionService.checkIfQuestionExists(2, ADDRESS)).willReturn(new Question());
         given(userService.checkIfValidUser(ADDRESS)).willReturn(new User());
-        given(userService.checkIfQuestionAlreadyRequestedByUser(2, new User().getQuestionResults())).willReturn(true);
         given(questionUtils.getQuestionString(new Question())).willReturn("This Question");
         SMSReceiverResponse smsReceiverResponse = smsService.sendQuestion(MESSAGE, ADDRESS);
         assertNotNull(smsReceiverResponse);

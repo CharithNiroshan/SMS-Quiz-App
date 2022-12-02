@@ -4,19 +4,23 @@ import com.ideamart.app.constant.Message;
 import com.ideamart.app.constant.RequestType;
 import com.ideamart.app.dto.SMSSenderRequest;
 import com.ideamart.app.dto.SMSSenderResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @Component
 public class MessageUtils {
-    private static final String SERVERURL = "http://localhost:7000/sms/send";
-    private static final String PASSWORD = "password";
-    private static final String APPLICATIONID = "APP_000001";
+    @Value("${SERVERURL}")
+    private String serverUrl;
+    @Value("${PASSWORD}")
+    private String password;
+    @Value("${APPLICATIONID}")
+    private String applicationId;
     private final RestTemplate restTemplate = new RestTemplate();
 
     public void sendMessage(String message, String destinationAddress) {
-        SMSSenderRequest smsSenderRequest = new SMSSenderRequest(message, destinationAddress, APPLICATIONID, PASSWORD);
-        restTemplate.postForObject(SERVERURL, smsSenderRequest, SMSSenderResponse.class);
+        SMSSenderRequest smsSenderRequest = new SMSSenderRequest(message, destinationAddress, applicationId, password);
+        restTemplate.postForObject(serverUrl, smsSenderRequest, SMSSenderResponse.class);
     }
 
     public RequestType getRequestType(String message, String address) {
@@ -31,7 +35,7 @@ public class MessageUtils {
         } else if (message.matches("TEST\\s+LEADERBOARD")) {
             return RequestType.LEADERBOARD;
         } else {
-            sendMessage(Message.INVALIDREQUEST.toString(), address);
+            sendMessage(Message.INVALID_REQUEST.toString(), address);
             return RequestType.INVALID;
         }
     }

@@ -4,11 +4,11 @@ import com.ideamart.app.constant.AnswerStatus;
 import com.ideamart.app.constant.Message;
 import com.ideamart.app.constant.QuestionStatus;
 import com.ideamart.app.exception.*;
-import com.ideamart.app.model.User;
+import com.ideamart.app.entity.User;
 import com.ideamart.app.repository.UserRepository;
 import com.ideamart.app.util.MessageUtils;
-import com.ideamart.app.utilclass.Attempt;
-import com.ideamart.app.utilclass.QuestionResult;
+import com.ideamart.app.model.Attempt;
+import com.ideamart.app.model.QuestionResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -42,7 +43,7 @@ public class UserService {
         Optional<User> user = userRepository.findByAddress(address);
 
         if (user.isPresent()) {
-            messageUtils.sendMessage(Message.USERALREADYEXISTS.toString(), address);
+            messageUtils.sendMessage(Message.USER_ALREADY_EXISTS.toString(), address);
             throw new UserAlreadyExistsException();
         }
     }
@@ -53,41 +54,45 @@ public class UserService {
         if (user.isPresent()) {
             return user.get();
         } else {
-            messageUtils.sendMessage(Message.USERNOTFOUND.toString(), address);
+            messageUtils.sendMessage(Message.USER_NOT_FOUND.toString(), address);
             throw new UserNotFoundException();
         }
     }
 
-    public List<QuestionResult> addQuestionToUserQuestionsList(List<QuestionResult> questionResults, int questionNo) {
-        QuestionResult questionResult = new QuestionResult(questionNo, QuestionStatus.NOTANSWERED);
+    public List<QuestionResult> addQuestionToUserQuestionsList(List<QuestionResult> questionResults, String id) {
+        QuestionResult questionResult = new QuestionResult(id, QuestionStatus.NOTANSWERED);
         questionResults.add(questionResult);
         return questionResults;
     }
 
-    public QuestionResult checkIfUserHasRequestedQuestion(List<QuestionResult> questionResults, int questionNo, String address) {
-        List<QuestionResult> questionResultList = questionResults.stream().filter(questionResult -> questionResult.getQuestionNo() == questionNo).toList();
+    public QuestionResult checkIfUserHasRequestedQuestion(List<QuestionResult> questionResults, String id, String address) {
+        List<QuestionResult> questionResultList = questionResults.stream().filter(questionResult -> Objects.equals(questionResult.getId(), id)).toList();
         if (!questionResultList.isEmpty()) {
             return questionResultList.get(0);
         } else {
-            messageUtils.sendMessage(Message.NOTREQUESTEDYET.toString(), address);
+            messageUtils.sendMessage(Message.NOT_REQUESTED_YET.toString(), address);
             throw new NotRequestedYetException();
         }
     }
 
     public void checkForEligibilityToAnswer(QuestionResult questionResult, String address) {
-        if (questionResult.getAttempts().size() >= 2) {
-            messageUtils.sendMessage(Message.NOATTEMPTSLEFT.toString(), address);
-            throw new NoAttemptsLeftException();
+        if (!questionResult.getAttempts().isEmpty()) {
+            for (Attempt attempt : questionResult.getAttempts()) {
+                if (attempt.getAnswerStatus() == AnswerStatus.CORRECT) {
+                    messageUtils.sendMessage(Message.ALREADY_ANSWERED_CORRECTLY.toString(), address);
+                    throw new AlreadyAnsweredCorrectlyException();
+                }
+            }
         }
-        if (!questionResult.getAttempts().isEmpty() && questionResult.getAttempts().get(0).getAnswerStatus() == AnswerStatus.CORRECT) {
-            messageUtils.sendMessage(Message.ALREADYANSWEREDCORRECTLY.toString(), address);
-            throw new AlreadyAnsweredCorrectlyException();
+        if (questionResult.getAttempts().size() >= 2) {
+            messageUtils.sendMessage(Message.NO_ATTEMPTS_LEFT.toString(), address);
+            throw new NoAttemptsLeftException();
         }
     }
 
-    public List<QuestionResult> getUpdatedQuestionResultsList(List<QuestionResult> questionResults, int questionNo, Attempt attempt) {
+    public List<QuestionResult> getUpdatedQuestionResultsList(List<QuestionResult> questionResults, String id, Attempt attempt) {
         for (QuestionResult questionResult : questionResults) {
-            if (questionResult.getQuestionNo() == questionNo) {
+            if (Objects.equals(questionResult.getId(), id)) {
                 questionResult.getAttempts().add(attempt);
                 if (questionResult.getQuestionStatus() == QuestionStatus.NOTANSWERED) {
                     questionResult.setQuestionStatus(QuestionStatus.ANSWERED);
@@ -109,8 +114,8 @@ public class UserService {
         mongoTemplate.findAndModify(query, update, findAndModifyOptions, User.class);
     }
 
-    public boolean checkIfQuestionAlreadyRequestedByUser(int questionNo, List<QuestionResult> questionResults) {
-        List<QuestionResult> filteredQuestionResults = questionResults.stream().filter(question -> question.getQuestionNo() == questionNo).toList();
+    public boolean checkIfQuestionAlreadyRequestedByUser(String questionId, List<QuestionResult> questionResults) {
+        List<QuestionResult> filteredQuestionResults = questionResults.stream().filter(question -> Objects.equals(question.getId(), questionId)).toList();
         return filteredQuestionResults.isEmpty();
     }
 

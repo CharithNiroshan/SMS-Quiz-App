@@ -4,21 +4,21 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum Message {
-    QUESTIONNOTFOUND("Invalid question number."),
-    USERNOTFOUND("You are not registered with us. Send TEST REG to 77000 to register."),
-    USERALREADYEXISTS("You are already registered."),
-    CORRECTANSWER("Congratulations. Your answer is correct."),
-    WRONGANSWER("Sorry. Your answer is wrong."),
-    NOTANSWEREDYET("You haven't answered to any questions yet."),
-    NOATTEMPTSLEFT("You don't have anymore attempts left to answer this question."),
-    NOTREQUESTEDYET("You haven't requested the question yet."),
-    INVALIDREQUEST("Invalid request."),
-    ALREADYANSWEREDCORRECTLY("You have already answered correctly to this question. Try another question."),
-    REGISTERDSUCCESSFULLY("Registration successful."),
-    QUESTIONSENDSUCCESSFULLY("Question send successfully."),
-    SCORESENDSUCCESSFULLY("User score send successfully."),
-    LEADERBOARDSENDSUCCESSFULLY("Leaderboard send successfully."),
-    ANSWERSTATUSSENDSUCCESSFULLY("Answer status send successfully to user.");
+    QUESTION_NOT_FOUND("Invalid question number."),
+    USER_NOT_FOUND("You are not registered with us. Send TEST REG to 77000 to register."),
+    USER_ALREADY_EXISTS("You are already registered."),
+    CORRECT_ANSWER("Congratulations. Your answer is correct."),
+    WRONG_ANSWER("Sorry. Your answer is wrong."),
+    NOT_ANSWERED_YET("You haven't answered to any questions yet."),
+    NO_ATTEMPTS_LEFT("You don't have anymore attempts left to answer this question."),
+    NOT_REQUESTED_YET("You haven't requested the question yet."),
+    INVALID_REQUEST("Invalid request."),
+    ALREADY_ANSWERED_CORRECTLY("You have already answered correctly to this question. Try another question."),
+    REGISTERED_SUCCESSFULLY("Registration successful."),
+    QUESTION_SEND_SUCCESSFULLY("Question send successfully."),
+    SCORE_SEND_SUCCESSFULLY("User score send successfully."),
+    LEADERBOARD_SEND_SUCCESSFULLY("Leaderboard send successfully."),
+    ANSWER_STATUS_SEND_SUCCESSFULLY("Answer status send successfully to user.");
 
     private final String text;
 

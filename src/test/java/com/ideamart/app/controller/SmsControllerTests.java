@@ -55,7 +55,7 @@ class SmsControllerTests {
     @Test
     void whenAskForRegistrationFromNewNumberShouldReturnSuccessCode() throws Exception {
         given(messageUtils.getRequestType(smsReceiverRequest.getMessage(), smsReceiverRequest.getSourceAddress())).willReturn(RequestType.REGISTER);
-        smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.S0000, Message.REGISTERDSUCCESSFULLY.toString());
+        smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.S0000, Message.REGISTERED_SUCCESSFULLY.toString());
         given(smsService.registerUser(smsReceiverRequest.getSourceAddress())).willReturn(smsReceiverResponse);
         mockMvc.perform(
                         post(LINK)
@@ -76,7 +76,7 @@ class SmsControllerTests {
                                 ))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(SmsReceiverResponseCode.E0000.toString()))
-                .andExpect(jsonPath("$.statusDetail").value(Message.INVALIDREQUEST.toString()));
+                .andExpect(jsonPath("$.statusDetail").value(Message.INVALID_REQUEST.toString()));
     }
 
     @Test
@@ -90,7 +90,7 @@ class SmsControllerTests {
                                 ))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(SmsReceiverResponseCode.E0001.toString()))
-                .andExpect(jsonPath("$.statusDetail").value(Message.USERALREADYEXISTS.toString()));
+                .andExpect(jsonPath("$.statusDetail").value(Message.USER_ALREADY_EXISTS.toString()));
     }
 
     @Test
@@ -104,7 +104,7 @@ class SmsControllerTests {
                                 ))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(SmsReceiverResponseCode.E0002.toString()))
-                .andExpect(jsonPath("$.statusDetail").value(Message.USERNOTFOUND.toString()));
+                .andExpect(jsonPath("$.statusDetail").value(Message.USER_NOT_FOUND.toString()));
     }
 
     @Test
@@ -118,13 +118,13 @@ class SmsControllerTests {
                                 ))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(SmsReceiverResponseCode.E0003.toString()))
-                .andExpect(jsonPath("$.statusDetail").value(Message.QUESTIONNOTFOUND.toString()));
+                .andExpect(jsonPath("$.statusDetail").value(Message.QUESTION_NOT_FOUND.toString()));
     }
 
     @Test
     void whenAskForValidQuestionShouldReturnS0001SuccessCode() throws Exception {
         given(messageUtils.getRequestType(smsReceiverRequest.getMessage(), smsReceiverRequest.getSourceAddress())).willReturn(RequestType.QUESTION);
-        smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.S0001, Message.QUESTIONSENDSUCCESSFULLY.toString());
+        smsReceiverResponse = new SMSReceiverResponse(SmsReceiverResponseCode.S0001, Message.QUESTION_SEND_SUCCESSFULLY.toString());
         given(smsService.sendQuestion(smsReceiverRequest.getMessage(), smsReceiverRequest.getSourceAddress())).willReturn(smsReceiverResponse);
         mockMvc.perform(
                         post(LINK)
@@ -133,6 +133,6 @@ class SmsControllerTests {
                                 ))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(SmsReceiverResponseCode.S0001.toString()))
-                .andExpect(jsonPath("$.statusDetail").value(Message.QUESTIONSENDSUCCESSFULLY.toString()));
+                .andExpect(jsonPath("$.statusDetail").value(Message.QUESTION_SEND_SUCCESSFULLY.toString()));
     }
 }
