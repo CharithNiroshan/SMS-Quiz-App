@@ -57,8 +57,6 @@ class SmsServiceTests {
 
     @Test
     void WhenAskForQuestionByNonExistentUserShouldThrowUserNotFoundException() {
-        given(messageUtils.retrieveQuestionNo(MESSAGE)).willReturn(7);
-        given(questionService.checkIfQuestionExists(7, ADDRESS)).willReturn(new Question());
         given(userService.checkIfValidUser(ADDRESS)).willThrow(new UserNotFoundException());
         assertThrows(
                 UserNotFoundException.class, () -> smsService.sendQuestion(MESSAGE, ADDRESS)
