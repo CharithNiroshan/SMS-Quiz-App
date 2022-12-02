@@ -1,8 +1,8 @@
 package com.ideamart.app.service;
 
-import com.ideamart.app.constants.AnswerStatus;
-import com.ideamart.app.constants.Message;
-import com.ideamart.app.constants.SmsReceiverResponseCode;
+import com.ideamart.app.constant.AnswerStatus;
+import com.ideamart.app.constant.Message;
+import com.ideamart.app.constant.SmsReceiverResponseCode;
 import com.ideamart.app.dto.SMSReceiverResponse;
 import com.ideamart.app.model.Question;
 import com.ideamart.app.model.User;
@@ -11,7 +11,6 @@ import com.ideamart.app.util.QuestionUtils;
 import com.ideamart.app.utilclasses.Attempt;
 import com.ideamart.app.utilclasses.QuestionResult;
 import com.ideamart.app.utilclasses.UserScore;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@Slf4j
 @Service
 public class SmsService {
     private final UserService userService;
@@ -38,8 +36,7 @@ public class SmsService {
 
     public SMSReceiverResponse registerUser(String address) {
         userService.checkIfUserAlreadyExists(address);
-        User user = new User(address);
-        userService.saveUser(user);
+        userService.saveUser(address);
         messageUtils.sendMessage(Message.REGISTERDSUCCESSFULLY.toString(), address);
         return new SMSReceiverResponse(SmsReceiverResponseCode.S0000, Message.REGISTERDSUCCESSFULLY.toString());
     }
@@ -47,7 +44,7 @@ public class SmsService {
     public SMSReceiverResponse sendQuestion(String message, String address) {
         int questionNo = messageUtils.retrieveQuestionNo(message);
         Question question = questionService.checkIfQuestionExists(questionNo, address);
-        User user = userService.checkIfUserExists(address);
+        User user = userService.checkIfValidUser(address);
         if (userService.checkIfQuestionAlreadyRequestedByUser(questionNo, user.getQuestionResults())) {
             List<QuestionResult> updatedQuestionResultsList = userService.addQuestionToUserQuestionsList(user.getQuestionResults(), questionNo);
             userService.updateUserQuestionList(address, updatedQuestionResultsList);
@@ -60,7 +57,7 @@ public class SmsService {
     public SMSReceiverResponse validateAnswerAndSendReply(String messageContent, String address) {
         int questionNo = messageUtils.retrieveQuestionNo(messageContent);
         int answerNo = messageUtils.retrieveAnswerNo(messageContent);
-        User user = userService.checkIfUserExists(address);
+        User user = userService.checkIfValidUser(address);
         Question question = questionService.checkIfQuestionExists(questionNo, address);
         QuestionResult questionResult = userService.checkIfUserHasRequestedQuestion(user.getQuestionResults(), questionNo, address);
         userService.checkForEligibilityToAnswer(questionResult, address);
@@ -78,7 +75,7 @@ public class SmsService {
     }
 
     public SMSReceiverResponse sendScore(String address) {
-        User user = userService.checkIfUserExists(address);
+        User user = userService.checkIfValidUser(address);
         int finalScore = questionUtils.getUserFinalScore(user.getQuestionResults());
         double average = questionUtils.getUserAverage(user.getQuestionResults(), finalScore, address);
         DecimalFormat decimalFormat = new DecimalFormat("#.##");

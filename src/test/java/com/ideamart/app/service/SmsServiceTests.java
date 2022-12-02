@@ -1,6 +1,6 @@
 package com.ideamart.app.service;
 
-import com.ideamart.app.constants.SmsReceiverResponseCode;
+import com.ideamart.app.constant.SmsReceiverResponseCode;
 import com.ideamart.app.dto.SMSReceiverResponse;
 import com.ideamart.app.exception.QuestionNotFoundException;
 import com.ideamart.app.exception.UserNotFoundException;
@@ -47,7 +47,7 @@ class SmsServiceTests {
     void WhenAskForQuestionShouldReturnQuestionSendSuccessfullyStatusCode() {
         given(messageUtils.retrieveQuestionNo(MESSAGE)).willReturn(2);
         given(questionService.checkIfQuestionExists(2, ADDRESS)).willReturn(new Question());
-        given(userService.checkIfUserExists(ADDRESS)).willReturn(new User());
+        given(userService.checkIfValidUser(ADDRESS)).willReturn(new User());
         given(userService.checkIfQuestionAlreadyRequestedByUser(2, new User().getQuestionResults())).willReturn(true);
         given(questionUtils.getQuestionString(new Question())).willReturn("This Question");
         SMSReceiverResponse smsReceiverResponse = smsService.sendQuestion(MESSAGE, ADDRESS);
@@ -59,7 +59,7 @@ class SmsServiceTests {
     void WhenAskForQuestionByNonExistentUserShouldThrowUserNotFoundException() {
         given(messageUtils.retrieveQuestionNo(MESSAGE)).willReturn(7);
         given(questionService.checkIfQuestionExists(7, ADDRESS)).willReturn(new Question());
-        given(userService.checkIfUserExists(ADDRESS)).willThrow(new UserNotFoundException());
+        given(userService.checkIfValidUser(ADDRESS)).willThrow(new UserNotFoundException());
         assertThrows(
                 UserNotFoundException.class, () -> smsService.sendQuestion(MESSAGE, ADDRESS)
         );

@@ -1,12 +1,11 @@
 package com.ideamart.app.service;
 
-import com.ideamart.app.constants.Message;
+import com.ideamart.app.constant.Message;
 import com.ideamart.app.dto.QuestionRequest;
 import com.ideamart.app.exception.QuestionNotFoundException;
 import com.ideamart.app.model.Question;
 import com.ideamart.app.repository.QuestionRepository;
 import com.ideamart.app.util.MessageUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Slf4j
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final MessageUtils messageUtils;

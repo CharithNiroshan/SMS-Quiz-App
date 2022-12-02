@@ -1,7 +1,7 @@
 package com.ideamart.app.controller;
 
-import com.ideamart.app.constants.Message;
-import com.ideamart.app.constants.SmsReceiverResponseCode;
+import com.ideamart.app.constant.Message;
+import com.ideamart.app.constant.SmsReceiverResponseCode;
 import com.ideamart.app.dto.SMSReceiverRequest;
 import com.ideamart.app.dto.SMSReceiverResponse;
 import com.ideamart.app.exception.*;

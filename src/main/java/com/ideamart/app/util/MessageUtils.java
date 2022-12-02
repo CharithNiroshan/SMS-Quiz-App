@@ -1,7 +1,7 @@
 package com.ideamart.app.util;
 
-import com.ideamart.app.constants.Message;
-import com.ideamart.app.constants.RequestType;
+import com.ideamart.app.constant.Message;
+import com.ideamart.app.constant.RequestType;
 import com.ideamart.app.dto.SMSSenderRequest;
 import com.ideamart.app.dto.SMSSenderResponse;
 import org.springframework.stereotype.Component;

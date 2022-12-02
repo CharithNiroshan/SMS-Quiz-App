@@ -1,4 +1,4 @@
-package com.ideamart.app.constants;
+package com.ideamart.app.constant;
 
 public enum QuestionStatus {
     ANSWERED,

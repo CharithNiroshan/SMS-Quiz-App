@@ -1,6 +1,6 @@
 package com.ideamart.app.utilclasses;
 
-import com.ideamart.app.constants.QuestionStatus;
+import com.ideamart.app.constant.QuestionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

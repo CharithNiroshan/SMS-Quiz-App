@@ -1,15 +1,14 @@
 package com.ideamart.app.service;
 
-import com.ideamart.app.constants.AnswerStatus;
-import com.ideamart.app.constants.Message;
-import com.ideamart.app.constants.QuestionStatus;
+import com.ideamart.app.constant.AnswerStatus;
+import com.ideamart.app.constant.Message;
+import com.ideamart.app.constant.QuestionStatus;
 import com.ideamart.app.exception.*;
 import com.ideamart.app.model.User;
 import com.ideamart.app.repository.UserRepository;
 import com.ideamart.app.util.MessageUtils;
 import com.ideamart.app.utilclasses.Attempt;
 import com.ideamart.app.utilclasses.QuestionResult;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -35,7 +33,8 @@ public class UserService {
         this.messageUtils = messageUtils;
     }
 
-    public void saveUser(User user) {
+    public void saveUser(String address) {
+        User user = new User(address);
         userRepository.save(user);
     }
 
@@ -48,7 +47,7 @@ public class UserService {
         }
     }
 
-    public User checkIfUserExists(String address) {
+    public User checkIfValidUser(String address) {
         Optional<User> user = userRepository.findByAddress(address);
 
         if (user.isPresent()) {

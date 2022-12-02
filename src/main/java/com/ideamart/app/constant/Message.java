@@ -1,4 +1,4 @@
-package com.ideamart.app.constants;
+package com.ideamart.app.constant;
 
 import lombok.AllArgsConstructor;
 

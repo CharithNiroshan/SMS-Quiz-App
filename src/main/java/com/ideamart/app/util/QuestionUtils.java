@@ -1,21 +1,19 @@
 package com.ideamart.app.util;
 
-import com.ideamart.app.constants.AnswerStatus;
-import com.ideamart.app.constants.Message;
-import com.ideamart.app.constants.QuestionStatus;
+import com.ideamart.app.constant.AnswerStatus;
+import com.ideamart.app.constant.Message;
+import com.ideamart.app.constant.QuestionStatus;
 import com.ideamart.app.exception.NotAnsweredYetException;
 import com.ideamart.app.model.Question;
 import com.ideamart.app.utilclasses.Attempt;
 import com.ideamart.app.utilclasses.QuestionResult;
 import com.ideamart.app.utilclasses.UserScore;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @Component
 public class QuestionUtils {
     private final MessageUtils messageUtils;
@@ -53,7 +51,7 @@ public class QuestionUtils {
     }
 
     public double getUserAverage(List<QuestionResult> questionResults, int finalScore, String address) {
-        int noOfAnsweredQuestion = 0;
+        double noOfAnsweredQuestion = 0;
 
         for (QuestionResult questionResult : questionResults) {
             if (questionResult.getQuestionStatus() == QuestionStatus.ANSWERED) {

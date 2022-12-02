@@ -13,10 +13,6 @@ public class UserScore implements Comparable<UserScore> {
 
     @Override
     public int compareTo(UserScore userScore) {
-        if (this.getScore() > userScore.getScore()) {
-            return -1;
-        } else {
-            return 1;
-        }
+        return Integer.compare(userScore.getScore(), this.getScore());
     }
 }
