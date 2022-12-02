@@ -8,9 +8,9 @@ import com.ideamart.app.model.Question;
 import com.ideamart.app.model.User;
 import com.ideamart.app.util.MessageUtils;
 import com.ideamart.app.util.QuestionUtils;
-import com.ideamart.app.utilclasses.Attempt;
-import com.ideamart.app.utilclasses.QuestionResult;
-import com.ideamart.app.utilclasses.UserScore;
+import com.ideamart.app.utilclass.Attempt;
+import com.ideamart.app.utilclass.QuestionResult;
+import com.ideamart.app.utilclass.UserScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,9 +42,9 @@ public class SmsService {
     }
 
     public SMSReceiverResponse sendQuestion(String message, String address) {
+        User user = userService.checkIfValidUser(address);
         int questionNo = messageUtils.retrieveQuestionNo(message);
         Question question = questionService.checkIfQuestionExists(questionNo, address);
-        User user = userService.checkIfValidUser(address);
         if (userService.checkIfQuestionAlreadyRequestedByUser(questionNo, user.getQuestionResults())) {
             List<QuestionResult> updatedQuestionResultsList = userService.addQuestionToUserQuestionsList(user.getQuestionResults(), questionNo);
             userService.updateUserQuestionList(address, updatedQuestionResultsList);
@@ -54,10 +54,10 @@ public class SmsService {
         return new SMSReceiverResponse(SmsReceiverResponseCode.S0001, Message.QUESTIONSENDSUCCESSFULLY.toString());
     }
 
-    public SMSReceiverResponse validateAnswerAndSendReply(String messageContent, String address) {
-        int questionNo = messageUtils.retrieveQuestionNo(messageContent);
-        int answerNo = messageUtils.retrieveAnswerNo(messageContent);
+    public SMSReceiverResponse validateAnswerAndSendReply(String message, String address) {
         User user = userService.checkIfValidUser(address);
+        int questionNo = messageUtils.retrieveQuestionNo(message);
+        int answerNo = messageUtils.retrieveAnswerNo(message);
         Question question = questionService.checkIfQuestionExists(questionNo, address);
         QuestionResult questionResult = userService.checkIfUserHasRequestedQuestion(user.getQuestionResults(), questionNo, address);
         userService.checkForEligibilityToAnswer(questionResult, address);

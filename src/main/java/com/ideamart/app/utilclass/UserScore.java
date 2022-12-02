@@ -1,4 +1,4 @@
-package com.ideamart.app.utilclasses;
+package com.ideamart.app.utilclass;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

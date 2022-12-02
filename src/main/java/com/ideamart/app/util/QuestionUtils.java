@@ -5,9 +5,9 @@ import com.ideamart.app.constant.Message;
 import com.ideamart.app.constant.QuestionStatus;
 import com.ideamart.app.exception.NotAnsweredYetException;
 import com.ideamart.app.model.Question;
-import com.ideamart.app.utilclasses.Attempt;
-import com.ideamart.app.utilclasses.QuestionResult;
-import com.ideamart.app.utilclasses.UserScore;
+import com.ideamart.app.utilclass.Attempt;
+import com.ideamart.app.utilclass.QuestionResult;
+import com.ideamart.app.utilclass.UserScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
